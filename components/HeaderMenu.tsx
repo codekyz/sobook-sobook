@@ -11,20 +11,18 @@ const Header = styled.header`
   gap: 1px;
   border: 1px solid ${(props) => props.theme.fontColor};
   background-color: ${(props) => props.theme.fontColor};
-  * {
+  div,
+  form {
     background-color: ${(props) => props.theme.backColor};
-    display: flex;
   }
 `;
 
 export default function HeaderMenu() {
   return (
-    <>
-      <Header>
-        <LogInMenu />
-        <Title />
-        <SearchBar />
-      </Header>
-    </>
+    <Header>
+      <LogInMenu />
+      <Title />
+      <SearchBar />
+    </Header>
   );
 }
