@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 import LogInMenu from "./LogInMenu";
 import SearchBar from "./SearchBar";
@@ -8,20 +9,25 @@ const Header = styled.header`
   grid-template-columns: repeat(3, 1fr);
   height: auto;
   margin: 10px;
-  gap: 1px;
   border: 1px solid ${(props) => props.theme.fontColor};
-  background-color: ${(props) => props.theme.fontColor};
-  div,
-  form {
-    background-color: ${(props) => props.theme.backColor};
+  a {
+    place-self: center;
   }
 `;
 
 export default function HeaderMenu() {
   return (
     <Header>
-      <LogInMenu />
-      <Title />
+      <Link href="/signup">
+        <a>
+          <LogInMenu />
+        </a>
+      </Link>
+      <Link href="/">
+        <a>
+          <Title />
+        </a>
+      </Link>
       <SearchBar />
     </Header>
   );

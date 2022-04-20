@@ -1,7 +1,7 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Book } from "../modules/store";
 
 const SearchForm = styled.form`
   flex-grow: 1;
@@ -18,19 +18,14 @@ const Input = styled.input`
   }
 `;
 
-const Results = styled.div`
-  position: fixed;
-  top: 50px;
-  right: 10px;
-`;
-
-export default function SearchBar({
-  response,
-}: InferGetServerSidePropsType<GetServerSideProps>) {
+export default function SearchBar() {
   const [searchValue, setSearchValue] = useState("");
+  const router = useRouter();
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    router.push({ pathname: "/result", query: { search: searchValue } });
+    setSearchValue("");
   };
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -46,34 +41,6 @@ export default function SearchBar({
           onChange={onChange}
         />
       </SearchForm>
-      <Results>
-        {response?.items.map((item: Book) => (
-          <span
-            key={item.isbn}
-            dangerouslySetInnerHTML={{ __html: item.title }}
-          ></span>
-        ))}
-      </Results>
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const query = encodeURI("화해");
-  const response = await (
-    await fetch(
-      `https://openapi.naver.com/v1/search/book.json?query=${query}`,
-      {
-        headers: {
-          "X-Naver-Client-Id": `${process.env.CLIENT_ID}`,
-          "X-Naver-Client-Secret": `${process.env.CLIENT_SECRET}`,
-        },
-      }
-    )
-  ).json();
-
-  return {
-    props: {
-      response,
-    },
-  };
-};
